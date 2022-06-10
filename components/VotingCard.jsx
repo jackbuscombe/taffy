@@ -54,7 +54,7 @@ function VotingCard({ projectId, projectName, projectTicker, timeLeft, amountSta
 				<form className="border-t-[1px] border-t-gray-100 grid grid-cols-4 gap-12 mb-4 pt-6">
 					<div className="col-span-1">
 						<h4 className="font-semibold">Choose an answer</h4>
-						<p className="text-xs text-gray-400">Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form</p>
+						<p className="text-xs text-gray-400">Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form</p>
 					</div>
 
 					<div className="col-span-3 space-y-2">

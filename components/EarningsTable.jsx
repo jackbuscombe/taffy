@@ -65,7 +65,7 @@ function EarningsTable() {
 				</thead>
 				<tbody>
 					{MOCK_DATA.map(({ id, projectName, sales, royalty, revenue }, i) => (
-						<tr className="bg-white border-b hover:bg-gray-50">
+						<tr key={id} className="bg-white border-b hover:bg-gray-50">
 							<th onClick={() => router.push(`/nft/${id}`)} scope="row" className="text-blue-600 font-semibold px-4 py-2 border-[1px] border-gray-300 whitespace-nowrap cursor-pointer hover:underline">
 								{projectName}
 							</th>
