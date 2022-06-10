@@ -11,24 +11,24 @@ function Footer() {
 				</a>
 				<ul className="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0 dark:text-gray-400">
 					<li>
-						<a onClick={() => router.push("/about")} href="#" className="mr-4 hover:underline md:mr-6 ">
+						<p onClick={() => router.push("/about")} className="cursor-pointer mr-4 hover:underline md:mr-6 ">
 							About
-						</a>
+						</p>
 					</li>
 					<li>
-						<a onClick={() => router.push("/privacy")} href="#" className="mr-4 hover:underline md:mr-6">
+						<p onClick={() => router.push("/privacy")} className="cursor-pointer mr-4 hover:underline md:mr-6">
 							Privacy Policy
-						</a>
+						</p>
 					</li>
 					<li>
-						<a onClick={() => router.push("/licensing")} href="#" className="mr-4 hover:underline md:mr-6 ">
+						<p onClick={() => router.push("/licensing")} className="cursor-pointer mr-4 hover:underline md:mr-6 ">
 							Licensing
-						</a>
+						</p>
 					</li>
 					<li>
-						<a onClick={() => router.push("/contact")} href="#" className="hover:underline">
+						<p onClick={() => router.push("/contact")} className="cursor-pointer hover:underline">
 							Contact
-						</a>
+						</p>
 					</li>
 				</ul>
 			</div>
