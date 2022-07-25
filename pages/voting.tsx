@@ -8,7 +8,7 @@ import { db } from "../firebase";
 import unixToDateTime from "../hooks/unixToDateTime";
 import { ProjectType, ProposalType } from "../typings";
 
-function Voting({ proposals }: ProposalType[]) {
+function Voting({ proposals }: ProposalType[] | any) {
 	const [projects, setProjects] = useState<ProjectType[]>([]);
 	const [sortExpanded, setSortExpanded] = useState<boolean>(false);
 	const [sortedBy, setSortedBy] = useState<string>("popular");

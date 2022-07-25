@@ -88,7 +88,7 @@ function Profile({ userDetails, contributions, nftArray }: ProfilePageType) {
 			{backedToggle ? (
 				<div className="flex space-x-6 w-2/3 justify-between my-4">
 					{contributions.map((contribution: ContributionType, i: number) => (
-						<ProjectCard projectId={contribution.projectId} projectName={contribution.projectName} projectTicker={contribution.projectTicker} bannerImage={contribution.projectBannerImage} description={contribution.projectDescription} creatorName={contribution.creatorName} projectImage={contribution.projectImage} backers={contribution.backers} followers={contribution.followers} endDate={contribution.endDate} ethRaised={contribution.ethRaise} ethTarget={contribution.ethTarget} amountStaked={contribution.amountStaked} nftDrop={contribution.nftDrop} />
+						<ProjectCard key={contribution.projectId} projectId={contribution.projectId} projectName={contribution.projectName} projectTicker={contribution.projectTicker} bannerImage={contribution.projectBannerImage} description={contribution.projectDescription} creatorName={contribution.creatorName} projectImage={contribution.projectImage} backers={contribution.backers} followers={contribution.followers} endDate={contribution.endDate} ethRaised={contribution.ethRaise} ethTarget={contribution.ethTarget} amountStaked={contribution.amountStaked} nftDrop={contribution.nftDrop} />
 					))}
 					{/* <ProjectCard projectId={1} projectName="Project Name" bannerImage="/top-1.png" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." creatorName="Creator" projectImage="/face-1.png" backers={45} followers={355} endDate={1658355127} ethRaised={7.5} ethTarget={10} nftDrop={true} />
 					<ProjectCard projectId={1} projectName="Project Name" bannerImage="/top-2.png" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." creatorName="Creator" projectImage="/face-1.png" backers={45} followers={355} endDate={1658355127} ethRaised={7.5} ethTarget={10} nftDrop={true} />
@@ -97,7 +97,7 @@ function Profile({ userDetails, contributions, nftArray }: ProfilePageType) {
 			) : (
 				<div className="flex w-2/3 justify-evenly my-4">
 					{nftArray.map((nft: NftType, i: number) => (
-						<NftCardExtended id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} price={nft.price} creatorImage={nft.creatorImage} creatorName={nft.creatorName} />
+						<NftCardExtended key={nft.id} id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} price={nft.price} creatorImage={nft.creatorImage} creatorName={nft.creatorName} />
 					))}
 					{/* <NftCardExtended id={1} nftUrl="/nft2.png" nftName="NFT Name" projectName="Project Name" price="4.534 ETH" creatorImage="/face-1.png" creatorName="Jason Manx" />
 					<NftCardExtended id={1} nftUrl="/nft2.png" nftName="NFT Name" projectName="Project Name" price="4.534 ETH" creatorImage="/face-1.png" creatorName="Jason Manx" /> */}

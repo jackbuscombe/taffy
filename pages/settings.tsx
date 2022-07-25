@@ -196,7 +196,7 @@ function Settings({ id, firstName, lastName, bio, profileImage, userCreatedTimes
 				<div className="flex py-8 space-x-20">
 					<div className="w-1/3 space-y-2">
 						<p className="font-semibold">Bio</p>
-						<p className="font-light text-sm">The description will be included on the item's detail page underneath its image. Markdown syntax is supported.</p>
+						<p className="font-light text-sm">The description will be included on the items detail page underneath its image. Markdown syntax is supported.</p>
 					</div>
 					<textarea ref={bioRef} placeholder="Write something about yourself" className="w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
 				</div>
@@ -224,7 +224,7 @@ export async function getServerSideProps({ params }: any) {
 	let profileImage = "";
 	let userCreatedTimestamp = null;
 
-	const docRef = doc(db, "users", account);
+	const docRef = doc(db, "users", "0x163290dd5322db5F688b9a90d80817324A185780");
 	const docSnap = await getDoc(docRef);
 
 	if (docSnap.exists()) {

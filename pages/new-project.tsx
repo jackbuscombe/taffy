@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { Calendar } from "react-date-range";
+// import { Calendar } from "react-date-range";
 import fromUnixTime from "date-fns/fromUnixTime";
 import dateToUnix from "../hooks/dateToUnix";
 import unixToDateTime from "../hooks/unixToDateTime";
@@ -411,7 +411,7 @@ function NewProject() {
 				<div className="flex py-8 space-x-20">
 					<div className="w-1/3 space-y-2">
 						<p className="font-semibold">Project description</p>
-						<p className="font-light text-sm">The description will be included on the item's detail page underneath its image. Markdown syntax is supported.</p>
+						<p className="font-light text-sm">The description will be included on the items detail page underneath its image. Markdown syntax is supported.</p>
 					</div>
 					<textarea ref={projectDescriptionRef} placeholder="Description" className="w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
 				</div>

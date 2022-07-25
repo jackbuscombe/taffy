@@ -20,7 +20,7 @@ type Rewards = {
 	rewards: number;
 };
 
-function Rewards({ taffy }: TokenType) {
+function Rewards({ taffy }: TokenType | any) {
 	const [earning, setEarning] = useState<boolean>(false);
 	const [taffyData, setTaffyData] = useState<taffyData>();
 	const [rewards, setRewards] = useState<Rewards>();
@@ -193,7 +193,7 @@ export async function getServerSideProps() {
 	// Get TAFFY Token Data
 	const docRef = doc(db, "tokens", "1");
 	const docSnap = await getDoc(docRef);
-	let taffy = {
+	let taffy: TokenType = {
 		id: "1",
 		apy: 0,
 		name: "taffy",

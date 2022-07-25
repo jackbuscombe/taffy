@@ -172,11 +172,11 @@ function Nft({ id, nftUrl, name, description, createdTimestamp, creatorAddress, 
 					<div className="flex flex-col mt-4 space-y-2">
 						<div className="flex justify-between">
 							<h3 className="font-semibold">Contract Address</h3>
-							<a href={`https://etherscan.io/address/${contractAddress}`} target="_blank" className="text-blue-500 hover:underline font-semibold">{`${contractAddress?.slice(0, 5)}...${contractAddress?.slice(contractAddress?.length - 5)}`}</a>
+							<a href={`https://etherscan.io/address/${contractAddress}`} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline font-semibold">{`${contractAddress?.slice(0, 5)}...${contractAddress?.slice(contractAddress?.length - 5)}`}</a>
 						</div>
 						<div className="flex justify-between">
 							<h3 className="font-semibold">Token ID</h3>
-							<a href={`https://opensea.io/assets/ethereum/${contractAddress}/${tokenId}`} target="_blank" className="text-blue-500 hover:underline font-semibold">
+							<a href={`https://opensea.io/assets/ethereum/${contractAddress}/${tokenId}`} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline font-semibold">
 								{tokenId}
 							</a>
 						</div>
@@ -245,7 +245,7 @@ function Nft({ id, nftUrl, name, description, createdTimestamp, creatorAddress, 
 						</button>
 					</div>
 				</div>
-				<EarningsTable />
+				{/* <EarningsTable contributionArray={backedProjects} /> */}
 			</div>
 
 			{/* More from collection */}
@@ -256,7 +256,7 @@ function Nft({ id, nftUrl, name, description, createdTimestamp, creatorAddress, 
 				</div>
 				<div className="grid grid-cols-5 gap-4">
 					{nftsInCollection.map((nft, i) => (
-						<NftCardExtended id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} price={nft.price} creatorImage={nft.creatorImage} creatorName={nft.creatorName} />
+						<NftCardExtended key={nft.id} id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} price={nft.price} creatorImage={nft.creatorImage} creatorName={nft.creatorName} />
 					))}
 				</div>
 			</div>

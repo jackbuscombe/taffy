@@ -346,7 +346,7 @@ function Mint() {
 				<div className="flex py-8 space-x-20">
 					<div className="w-1/3 space-y-2">
 						<p className="font-semibold">NFT description</p>
-						<p className="font-light text-sm">The description will be included on the item's detail page underneath its image. Markdown syntax is supported.</p>
+						<p className="font-light text-sm">The description will be included on the items detail page underneath its image. Markdown syntax is supported.</p>
 					</div>
 					<textarea ref={description} placeholder="Description" className="w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
 				</div>

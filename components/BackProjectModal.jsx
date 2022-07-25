@@ -157,7 +157,7 @@ function BackProjectModal({ setIsBackingModalOpen, id, endTime, projectName, tok
 				Confirm
 			</button>
 
-			<p className="text-gray-500">This is an all or nothing and if project doesn't raise funds by {endTime} then funds will be returned. </p>
+			<p className="text-gray-500">This is an all or nothing and if project does not raise funds by {endTime} then funds will be returned. </p>
 			<Toaster />
 		</div>
 	);

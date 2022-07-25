@@ -155,7 +155,7 @@ function Admin({ id, projectName, projectTicker, projectImage, bannerImage, drop
 							<h2 className="text-2xl text-gray-800 font-bold mb-5">NFTs queued for minting</h2>
 							<div className="grid grid-cols-5 gap-4">
 								{upcomingNfts.map((nft: NftType, i: number) => (
-									<NftCard id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} />
+									<NftCard key={nft.id} id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} />
 								))}
 								{upcomingNfts?.length === 0 && <p className="col-span-5 text-center text-gray-500 italic font-light">No NFTs have been released yet.</p>}
 							</div>
@@ -164,7 +164,7 @@ function Admin({ id, projectName, projectTicker, projectImage, bannerImage, drop
 							<h2 className="text-2xl text-gray-800 font-bold mb-5">Already Released</h2>
 							<div className="grid grid-cols-5 gap-4">
 								{releasedNfts.map((nft: NftType, i: number) => (
-									<NftCard id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} />
+									<NftCard key={nft.id} id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} />
 								))}
 								{releasedNfts?.length === 0 && <p className="col-span-5 text-center text-gray-500 italic font-light">No NFTs have been released yet.</p>}
 							</div>

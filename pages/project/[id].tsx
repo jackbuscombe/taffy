@@ -392,7 +392,7 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 			) : selected == "similar" ? (
 				<div className="flex space-x-6 w-2/3 justify-between my-4">
 					{similarProjects.map((project, i) => (
-						<ProjectCard projectId={project.id} projectName={project.projectName} projectTicker={project.projectTicker} bannerImage={project.bannerImage} description={project.projectDescription} creatorName={project.creatorName} projectImage={project.projectImage} backers={project.contributionsCount} followers={project.followersCount} endDate={project.endDate} ethRaised={project.contributionsValue} ethTarget={project.target} amountStaked={project.amountStaked} nftDrop={true} />
+						<ProjectCard key={project.id} projectId={project.id} projectName={project.projectName} projectTicker={project.projectTicker} bannerImage={project.bannerImage} description={project.projectDescription} creatorName={project.creatorName} projectImage={project.projectImage} backers={project.contributionsCount} followers={project.followersCount} endDate={project.endDate} ethRaised={project.contributionsValue} ethTarget={project.target} amountStaked={project.amountStaked} nftDrop={true} />
 					))}
 					{/* <ProjectCard projectId={1} projectName="Project Name" bannerImage="/top-1.png" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." creatorName="Creator" projectImage="/face-1.png" backers={45} followers={355} endDate={endDate} ethRaised={contributionsValue} ethTarget={target} nftDrop={true} />
 					<ProjectCard projectId={1} projectName="Project Name" bannerImage="/top-2.png" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." creatorName="Creator" projectImage="/face-1.png" backers={45} followers={355} endDate={endDate} ethRaised={contributionsValue} ethTarget={target} nftDrop={true} />
@@ -502,7 +502,7 @@ export async function getServerSideProps({ params }: any) {
 
 		let userTokenBalance = 0;
 
-		const tokenBalanceSnap = await getDoc(doc(db, "tokens", tokenId, "holders", account));
+		const tokenBalanceSnap = await getDoc(doc(db, "tokens", tokenId, "holders", "0x163290dd5322db5F688b9a90d80817324A185780"));
 		if (tokenBalanceSnap.exists()) {
 			userTokenBalance = tokenBalanceSnap.data().balance;
 		}
