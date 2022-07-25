@@ -2,25 +2,51 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useMoralis } from "react-moralis";
 import { UserCircleIcon, PlusIcon } from "@heroicons/react/outline";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
+import SignupModal from "../components/SignupModal";
+import { useStore } from "../appStore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { db } from "../firebase";
+import toast, { Toaster } from "react-hot-toast";
+import SearchDropdown from "../components/SearchDropdown";
 
 function Header() {
+	const searchWrapperRef = useRef(null);
+	useOutsideAlerter(searchWrapperRef);
+
+	const { authenticate, logout, isAuthenticated, isAuthenticating, account, user, enableWeb3 } = useMoralis();
+	const signupModalOpen = useStore((state) => state.signupModalOpen);
+	const setSignupModalOpen = useStore((state) => state.setSignupModalOpen);
+	const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
+	const [searchInput, setSearchInput] = useState("");
+
 	const [userAddress, setUserAddress] = useState();
 	const [currentPage, setCurrentPage] = useState();
 	const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
-
 	const router = useRouter();
-	const { pid } = router.query;
-
-	const { authenticate, logout, isAuthenticated, isAuthenticating, account, user, enableWeb3 } = useMoralis();
 
 	const handleLogin = async () => {
-		if (!isAuthenticated) {
-			authenticate();
-			router.push("/admin");
-		} else {
+		if (isAuthenticated) {
 			return;
+		}
+
+		try {
+			const docRef = doc(db, "users", account);
+			const docSnap = await getDoc(docRef);
+
+			if (docSnap.exists()) {
+				console.log("Document data:", docSnap.data());
+				await authenticate();
+				toast.success("Welcome, ", docSnap.data().firstName);
+				router.push(`/profile/${account}`);
+			} else {
+				// doc.data() will be undefined in this case
+				setSignupModalOpen();
+				return;
+			}
+		} catch (error) {
+			toast.error("Unable to log in - make sure you have Metamask installed!");
 		}
 	};
 
@@ -31,7 +57,7 @@ function Header() {
 
 	const handleHomeClick = () => {
 		if (isAuthenticated) {
-			router.push("/admin");
+			router.push("/");
 		} else {
 			router.push("/");
 		}
@@ -39,22 +65,58 @@ function Header() {
 
 	useEffect(() => {
 		enableWeb3();
-	}, [user]);
+	}, []);
+
+	const debounce = (func) => {
+		let timer;
+		return function (...args) {
+			const context = this;
+			if (timer) clearTimeout(timer);
+			timer = setTimeout(() => {
+				timer = null;
+				func.apply(context, args);
+			}, 500);
+		};
+	};
+
+	const handleChange = (e) => {
+		const { value } = e.target;
+		setSearchInput(value);
+	};
+
+	const debouncedChange = useCallback(debounce(handleChange), []);
 
 	// useEffect(() => {
 	// 	const page = router.query();
 	// 	setCurrentPage(page);
 	// }, [router]);
 
+	function useOutsideAlerter(ref) {
+		useEffect(() => {
+			function handleClickOutside(event) {
+				if (ref.current && !ref.current.contains(event.target)) {
+					setIsSearchDropdownOpen(false);
+				}
+			}
+			document.addEventListener("mousedown", handleClickOutside);
+			return () => {
+				document.removeEventListener("mousedown", handleClickOutside);
+			};
+		}, [ref]);
+	}
+
 	return (
-		<header className="bg-[#252d46] sticky top-0 flex justify-around w-full py-4 items-center text-sm text-white z-50">
+		<header className="bg-[#252d46] sticky top-0 flex justify-around w-full py-4 items-center text-sm text-white z-30">
 			{/* Left */}
-			<div className="flex items-center justify-between space-x-12">
+			<div className="flex items-center justify-between lg:space-x-12 md:space-x-2">
 				<Image onClick={handleHomeClick} src={"/logo_color_2.png"} width={70} height={40} className="cursor-pointer" />
-				<div className="hidden sm:flex bg-[#3b4258] items-center flex-1 rounded-md p-2 w-60 shadow-md hover:bg-slate-600">
-					<input type="text" name="" id="" placeholder="Search" className="bg-transparent text-white placeholder:text-[#aaaaac] flex-1 outline-none text-sm" />
+				<div ref={searchWrapperRef}>
+					<div className="hidden sm:block bg-[#3b4258] items-center flex-1 rounded-md p-2 w-60 shadow-md hover:bg-slate-600">
+						<input onFocus={() => setIsSearchDropdownOpen(true)} onChange={debouncedChange} type="text" name="" id="" placeholder="Search" className="bg-transparent text-white placeholder:text-[#aaaaac] w-full outline-none text-sm" />
+					</div>
+					{isSearchDropdownOpen && <SearchDropdown searchInput={searchInput} setIsSearchDropdownOpen={setIsSearchDropdownOpen} />}
 				</div>
-				<nav className="hidden md:grid grid-cols-5 gap-6 items-center text-center p-2">
+				<nav className="hidden md:grid md:gap-2 grid-cols-5 items-center text-center p-2">
 					<p onClick={() => router.push("/projects")} className={`${currentPage == "projects" && "text-blue-500"} nav-item`}>
 						Projects
 					</p>
@@ -97,21 +159,21 @@ function Header() {
 				{isAuthenticated && (
 					<div className="hidden absolute group-hover:block z-10 bg-white divide-y divide-gray-100 rounded shadow w-44">
 						<div className="py-1 cursor-pointer">
-							<div className="flex items-center px-4 py-2 text-sm text-green-500 hover:bg-gray-100">
+							<div onClick={() => router.push("/new-project")} className="flex items-center px-4 py-2 text-sm font-semibold bg-green-500 text-white hover:opacity-80">
 								<PlusIcon className="h-3 w-3 mr-2" />
 								Create new project
 							</div>
 						</div>
-						<div className="py-1 cursor-pointer">
-							<p className="block px-4 py-2 text-sm text-blue-500 hover:bg-gray-100">mint NFTs</p>
+						<div onClick={() => router.push("/mint")} className="py-1 cursor-pointer">
+							<p className="block px-4 py-2 text-sm font-semibold bg-blue-500 text-white hover:opacity-80">Mint NFTs</p>
 						</div>
-						<div onClick={() => router.push("/profile")} className="py-1 cursor-pointer">
+						<div onClick={() => router.push(`/profile/${account}`)} className="py-1 cursor-pointer">
 							<p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</p>
 						</div>
-						<div className="py-1 cursor-pointer">
+						<div onClick={() => router.push("/settings")} className="py-1 cursor-pointer">
 							<p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</p>
 						</div>
-						<div className="py-1 cursor-pointer">
+						<div onClick={() => router.push("/about")} className="py-1 cursor-pointer">
 							<p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Support</p>
 						</div>
 						<div className="py-1 cursor-pointer" onClick={handleLogout}>
@@ -120,6 +182,10 @@ function Header() {
 					</div>
 				)}
 			</div>
+			<div className={`absolute p-4 rounded-sm shadow ${!signupModalOpen && "hidden"}`}>
+				<SignupModal />
+			</div>
+			<Toaster />
 		</header>
 	);
 }

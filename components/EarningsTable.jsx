@@ -1,4 +1,8 @@
+import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { db } from "../firebase";
+import capitalizeFirstLetter from "../hooks/capitalizeFirstLetter";
 
 const MOCK_DATA = [
 	{
@@ -38,8 +42,40 @@ const MOCK_DATA = [
 	},
 ];
 
-function EarningsTable() {
+function EarningsTable({ contributionArray }) {
 	const router = useRouter();
+	const [tableData, setTableData] = useState();
+
+	useEffect(() => {
+		if (!contributionArray) {
+			return;
+		}
+
+		let dataArray = [];
+
+		async function getTableData() {
+			for (let i = 0; i < contributionArray.length; i++) {
+				const docSnap = await getDoc(doc(db, "projects", contributionArray[i].projectId));
+
+				if (docSnap.exists()) {
+					console.log(docSnap.data());
+					dataArray.push({
+						id: docSnap.id,
+						projectName: capitalizeFirstLetter(docSnap.data().projectName),
+						sales: docSnap.data().contributionsValue,
+						royalty: contributionArray[i].amount / docSnap.data().contributionsValue,
+						revenue: contributionArray[i].amount,
+					});
+				} else {
+					return;
+				}
+			}
+			console.log(dataArray);
+			setTableData(dataArray);
+		}
+
+		getTableData();
+	}, [contributionArray]);
 
 	return (
 		<div className="relative overflow-x-auto shadow-md rounded-sm">
@@ -64,14 +100,14 @@ function EarningsTable() {
 					</tr>
 				</thead>
 				<tbody>
-					{MOCK_DATA.map(({ id, projectName, sales, royalty, revenue }, i) => (
-						<tr key={id} className="bg-white border-b hover:bg-gray-50">
-							<th onClick={() => router.push(`/nft/${id}`)} scope="row" className="text-blue-600 font-semibold px-4 py-2 border-[1px] border-gray-300 whitespace-nowrap cursor-pointer hover:underline">
+					{tableData?.map(({ id, projectName, sales, royalty, revenue }, i) => (
+						<tr key={i} className="bg-white border-b hover:bg-gray-50">
+							<th onClick={() => router.push(`/project/${id}`)} scope="row" className="text-blue-600 font-semibold px-4 py-2 border-[1px] border-gray-300 whitespace-nowrap cursor-pointer hover:underline">
 								{projectName}
 							</th>
-							<td className="px-4 py-2 border-[1px] border-gray-300">${parseInt(sales).toLocaleString()}</td>
-							<td className="px-4 py-2 border-[1px] border-gray-300">{royalty}%</td>
-							<td className="px-4 py-2 border-[1px] border-gray-300">${parseInt(revenue).toLocaleString()}</td>
+							<td className="px-4 py-2 border-[1px] border-gray-300">${parseFloat(sales).toLocaleString()}</td>
+							<td className="px-4 py-2 border-[1px] border-gray-300">{royalty.toFixed(5)}%</td>
+							<td className="px-4 py-2 border-[1px] border-gray-300">${parseFloat(revenue).toLocaleString()}</td>
 							<td className="px-4 py-2 border-[1px] border-gray-300 text-right">
 								<div className="flex space-x-2">
 									<button className="text-blue-600 hover:text-white hover:bg-blue-600 border-[1px] border-blue-200 rounded-sm px-2 py-1">Buy</button>

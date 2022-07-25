@@ -1,10 +1,15 @@
-function NftCard({ id, imageUrl, nftName, projectName }) {
+import { useRouter } from "next/router";
+import capitalizeFirstLetter from "../hooks/capitalizeFirstLetter";
+
+function NftCard({ id, nftUrl, nftName, projectName }) {
+	const router = useRouter();
+
 	return (
-		<div className="cursor-pointer hover:bg-gray-200 p-4 transition transform ease-in-out shadow-sm">
-			<img src={imageUrl} className="mb-2" />
+		<div onClick={() => router.push(`/nft/${id}`)} className="cursor-pointer hover:bg-gray-200 p-4 transition transform ease-in-out shadow-sm">
+			<img src={nftUrl} className="mb-2" />
 			<div>
-				<h4 className="font-semibold text-black">{nftName}</h4>
-				<h5 className="text-sm text-gray-400 font-light">{projectName}</h5>
+				<h4 className="font-semibold text-black">{capitalizeFirstLetter(nftName)}</h4>
+				<h5 className="text-sm text-gray-400 font-light">{capitalizeFirstLetter(projectName)}</h5>
 			</div>
 		</div>
 	);
