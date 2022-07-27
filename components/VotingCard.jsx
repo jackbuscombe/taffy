@@ -46,6 +46,11 @@ function VotingCard({ proposalId, title, description, question, options, project
 
 	const submitVote = async (e) => {
 		// e.preventDefault();
+		if (!account) {
+			toast.dismiss();
+			toast.error("Please sign in to vote");
+			return;
+		}
 
 		if (typeof selectedOption !== "number") {
 			toast.error("Make a selection before submitting a vote");

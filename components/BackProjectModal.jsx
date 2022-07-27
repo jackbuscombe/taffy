@@ -108,10 +108,10 @@ function BackProjectModal({ setIsBackingModalOpen, id, endTime, projectName, tok
 	}, [backingAmount, tokenPrice]);
 
 	return (
-		<div className="z-50 h-[80vh] w-[80vh] fixed top-[5vh] bottom-[5vh] left-[20vw] right-[20vw] overflow-y-scroll scrollbar-hide m-auto bg-white rounded-lg p-6 shadow-lg text-gray-700 text-sm">
+		<div className="z-50 fixed flex flex-col justify-start top-[3vh] bottom-[3vh] left-[15vw] right-[15vw] overflow-y-scroll scrollbar-hide m-auto bg-white rounded-lg p-6 shadow-lg text-gray-700 text-sm">
 			<div className="flex justify-between items-center">
 				<h2 className="text-xl mb-2">Back {capitalizeFirstLetter(projectName)}</h2>
-				<XIcon onClick={() => setIsBackingModalOpen(false)} className="h-10 w-10 cursor-pointer p-2 hover:bg-gray-300 rounded-full" />
+				<XIcon onClick={() => setIsBackingModalOpen(false)} className="h-8 w-8 sm:h-10 sm:w-10 cursor-pointer sm:p-2 hover:bg-gray-300 rounded-full" />
 			</div>
 			<p className="text-gray-500 mb-4">Nor again is there anyone who loves or pursues or desires to obtain pain of itself</p>
 			<hr className="border-gray-200 mb-4" />
@@ -125,17 +125,17 @@ function BackProjectModal({ setIsBackingModalOpen, id, endTime, projectName, tok
 				</p>
 			</div>
 
-			<div className="w-full border border-gray-200 flex justify-between p-2 mb-4">
+			<div className="w-full border border-gray-200 flex flex-col sm:flex-row justify-between p-2 mb-4">
 				<input type="number" placeholder="0 ETH" className="flex-grow flex-1 outline-none placeholder:text-gray-400" value={`${backingAmount}`} onChange={(e) => setBackingAmount(parseFloat(e.target.value))} />
 				<p onClick={() => setBackingAmount(ethBalance)} className="font-semibold text-gray-400 cursor-pointer">
 					MAX
 				</p>
 			</div>
 
-			<div className="flex justify-between mb-4">
-				<p className="text-gray-500">
+			<div className="flex flex-col sm:flex-row justify-between mb-4">
+				<p className="flex flex-col sm:flex-row text-gray-500">
 					You will get{" "}
-					<span className="text-xs text-gray-400">
+					<span className="text-xs sm:ml-2 text-gray-400">
 						(based on price: {tokenPrice}ETH = 1{projectTicker.toUpperCase()})
 					</span>
 				</p>

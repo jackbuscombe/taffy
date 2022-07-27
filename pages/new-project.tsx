@@ -245,17 +245,20 @@ function NewProject() {
 		}
 
 		// [important] This toLocaleString Might not be ther BEST!!
-		let currentTimestamp = dateToUnix(new Date());
+		let currentTimestamp = Date.now() / 1000;
 		// let currentTimestamp = Date.parse(new Date().toLocaleString()) / 1000;
 		let dropTimestamps: number[] = [];
 		let i = 0;
-
-		do {
-			currentTimestamp += i;
-			// result.setDate(result.getDate() + i);
-			dropTimestamps = [...dropTimestamps, currentTimestamp];
-			i += parseInt(frequencyRef.current.value);
-		} while (currentTimestamp < endDate);
+		if (parseInt(frequencyRef.current.value) === 0) {
+			dropTimestamps = [currentTimestamp];
+		} else {
+			do {
+				currentTimestamp += i;
+				// result.setDate(result.getDate() + i);
+				dropTimestamps = [...dropTimestamps, currentTimestamp];
+				i += parseInt(frequencyRef.current.value);
+			} while (currentTimestamp < endDate);
+		}
 
 		try {
 			// Create Token

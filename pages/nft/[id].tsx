@@ -85,7 +85,7 @@ function Nft({ id, nftUrl, name, description, createdTimestamp, creatorAddress, 
 								<p className="text-xs text-gray-700 font-bold cursor-pointer group-hover:underline">{creatorName}</p>
 							</div>
 						</div>
-						<div className="flex items-center space-x-2 text-gray-600">
+						<div className="flex items-center text-center space-x-2 text-gray-600">
 							<EyeIcon className="h-6 w-6" />
 							<p>{views} views</p>
 						</div>

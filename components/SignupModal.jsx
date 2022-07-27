@@ -7,9 +7,14 @@ import { addDoc, collection, doc, getFirestore, serverTimestamp, setDoc, updateD
 // import { db } from "../firebase";
 import { storage } from "../firebase";
 import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/router";
+
+// import { useAccount, useNetwork, useSignMessage } from "wagmi";
 
 function SignupModal() {
+	// const { isConnected, address } = useAccount();
 	const db = getFirestore();
+	const router = useRouter();
 
 	const signupModalOpen = useStore((state) => state.signupModalOpen);
 	const setSignupModalOpen = useStore((state) => state.setSignupModalOpen);
@@ -59,8 +64,6 @@ function SignupModal() {
 				"state_changed",
 				(snapshot) => {
 					const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-					toast.dismiss();
-					toast.loading("Upload is " + progress + "% done");
 					switch (snapshot.state) {
 						case "paused":
 							toast("Upload is paused");
@@ -92,7 +95,7 @@ function SignupModal() {
 					toast.success("Congrats, you have signed up with Taffy");
 					setLoading(false);
 					setImage(false);
-					setSignupModalOpen();
+					setSignupModalOpen(false);
 				}
 			);
 		} catch (error) {
@@ -103,12 +106,12 @@ function SignupModal() {
 		}
 	};
 
-	useEffect(() => {
-		enableWeb3();
-	}, []);
+	// useEffect(() => {
+	// 	enableWeb3();
+	// }, []);
 
 	return (
-		<div className="fixed top-[5vh] bottom-[5vh] left-[20vw] right-[20vw] overflow-y-scroll scrollbar-hide m-auto bg-white rounded-sm p-4 shadow-lg text-gray-700">
+		<div className="fixed top-[3vh] bottom-[3vh] left-[20vw] right-[20vw] overflow-y-scroll scrollbar-hide m-auto bg-white rounded-sm p-4 shadow-lg text-gray-700">
 			<div className="flex flex-col space-y-4 mb-3">
 				<div className="flex justify-between">
 					<p className="text-xl font-semibold">Hey there, new friend!</p>
@@ -129,16 +132,18 @@ function SignupModal() {
 			</div>
 
 			<div className="flex flex-col space-y-4">
-				<p className="bg-gray-100 border p-2 rounded-sm">Address: {account}</p>
+				<div className="truncate">
+					<p className="bg-gray-100 border p-2 rounded-sm">Address: {account}</p>
+				</div>
 				<input ref={firstName} type="text" placeholder="First Name (required)" required className="border p-4 rounded-sm" />
 				<input ref={lastName} type="text" placeholder="Last Name" className="border p-4 rounded-sm" />
 				<input ref={filePickerRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
 
-				<div className="flex w-full justify-center space-x-2">
-					<button onClick={setSignupModalOpen} className="text-gray-600 px-20 py-2 rounded-sm font-semibold hover:bg-gray-600 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
+				<div className="flex w-full flex-col-reverse sm:flex-row justify-center items-center sm:space-x-2">
+					<button onClick={setSignupModalOpen} className="text-gray-600 w-4/5 py-2 rounded-sm font-semibold hover:bg-gray-600 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
 						Cancel
 					</button>
-					<button onClick={registerUser} className="bg-blue-500 text-white px-20 py-2 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
+					<button onClick={registerUser} className="bg-blue-500 text-white w-4/5 py-2 mb-2 sm:mb-0 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
 						{loading && (
 							<svg role="status" className="inline w-4 h-4 mr-3 text-black animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />

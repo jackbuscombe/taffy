@@ -9,6 +9,9 @@ import { UserType } from "../typings";
 import capitalizeFirstLetter from "../hooks/capitalizeFirstLetter";
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 
+// import { useAccount, useConnect, useDisconnect } from "wagmi";
+// import { InjectedConnector } from "wagmi/connectors/injected";
+
 // type UserType = {
 // 	firstName: string;
 // 	lastName: string;
@@ -16,9 +19,18 @@ import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase
 // 	profileImage: string;
 // };
 
-function Settings({ id, firstName, lastName, bio, profileImage, userCreatedTimestamp }: UserType) {
+function Settings() {
+	// const { address, isConnected } = useAccount();
+	// const { disconnect } = useDisconnect();
+
 	const { account, logout } = useMoralis();
 	const router = useRouter();
+
+	const [id, setId] = useState<string | undefined>();
+	const [firstName, setFirstName] = useState<string | undefined>();
+	const [lastName, setLastName] = useState<string | undefined>();
+	const [bio, setBio] = useState<string | undefined>();
+	const [profileImage, setProfileImage] = useState<string | undefined>();
 
 	const firstNameRef = useRef<HTMLInputElement>(null);
 	const lastNameRef = useRef<HTMLInputElement>(null);
@@ -104,32 +116,20 @@ function Settings({ id, firstName, lastName, bio, profileImage, userCreatedTimes
 		}
 	};
 
-	const handleLogout = async () => {
-		await logout();
+	const handleLogout = () => {
+		logout();
 		router.push("/");
 	};
 
-	useEffect(() => {
-		if (typeof firstName === undefined || typeof lastName === undefined || typeof bio === undefined || typeof profileImage === undefined || !firstNameRef.current || !lastNameRef.current || !bioRef.current) {
-			return;
-		}
+	// useEffect(() => {
+	// 	if (typeof firstName === undefined || typeof lastName === undefined || typeof bio === undefined || typeof profileImage === undefined || !firstNameRef.current || !lastNameRef.current || !bioRef.current) {
+	// 		return;
+	// 	}
 
-		if (firstName !== "") {
-			firstNameRef.current.value = capitalizeFirstLetter(firstName);
-		}
-
-		if (lastName !== "") {
-			lastNameRef.current.value = capitalizeFirstLetter(lastName);
-		}
-
-		if (bio !== "") {
-			bioRef.current.value = bio;
-		}
-
-		if (profileImage !== "") {
-			(document.getElementById("profile_image") as HTMLImageElement).src = profileImage;
-		}
-	}, [firstName, lastName, bio, profileImage]);
+	// 	if (profileImage !== "") {
+	// 		(document.getElementById("profile_image") as HTMLImageElement).src = profileImage;
+	// 	}
+	// }, [firstName, lastName, bio, profileImage]);
 
 	useEffect(() => {
 		if (!profileImage) {
@@ -137,6 +137,29 @@ function Settings({ id, firstName, lastName, bio, profileImage, userCreatedTimes
 		}
 		setImage(profileImage);
 	}, [profileImage]);
+
+	useEffect(() => {
+		async function getUserDetails() {
+			if (typeof account !== "string") {
+				return;
+			}
+
+			let profileImage = "";
+
+			const docRef = doc(db, "users", account);
+			const docSnap = await getDoc(docRef);
+
+			if (docSnap.exists()) {
+				setId(docSnap.id);
+				setFirstName(docSnap.data().firstName);
+				setLastName(docSnap.data().lastName);
+				setBio(docSnap.data().bio);
+				(document.getElementById("profile_image") as HTMLImageElement).src = docSnap.data().profileImage;
+				setProfileImage(docSnap.data().profileImage);
+			}
+		}
+		getUserDetails();
+	}, [account]);
 
 	return (
 		<main className="w-full bg-blue-50 flex justify-center py-8">
@@ -187,8 +210,8 @@ function Settings({ id, firstName, lastName, bio, profileImage, userCreatedTimes
 						Your name <span className="text-red-500">*</span>
 					</p>
 					<div className="w-2/3 flex space-x-3">
-						<input ref={firstNameRef} type="text" placeholder="First name" className="border-[1px] border-gray-200 rounded-sm px-4 py-2" />
-						<input ref={lastNameRef} type="text" placeholder="Last name" className="border-[1px] border-gray-200 rounded-sm px-4 py-2" />
+						<input value={firstName} onChange={(e) => setFirstName(e.target.value.toUpperCase())} ref={firstNameRef} type="text" placeholder="First name" className="border-[1px] border-gray-200 rounded-sm px-4 py-2" />
+						<input value={lastName} onChange={(e) => setLastName(e.target.value.toUpperCase())} ref={lastNameRef} type="text" placeholder="Last name" className="border-[1px] border-gray-200 rounded-sm px-4 py-2" />
 					</div>
 				</div>
 
@@ -198,7 +221,7 @@ function Settings({ id, firstName, lastName, bio, profileImage, userCreatedTimes
 						<p className="font-semibold">Bio</p>
 						<p className="font-light text-sm">The description will be included on the items detail page underneath its image. Markdown syntax is supported.</p>
 					</div>
-					<textarea ref={bioRef} placeholder="Write something about yourself" className="w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
+					<textarea value={bio} onChange={(e) => setBio(e.target.value)} ref={bioRef} placeholder="Write something about yourself" className="w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
 				</div>
 
 				{/* Submit Row */}
@@ -216,41 +239,41 @@ function Settings({ id, firstName, lastName, bio, profileImage, userCreatedTimes
 }
 export default Settings;
 
-export async function getServerSideProps({ params }: any) {
-	let id = "";
-	let firstName = "";
-	let lastName = "";
-	let bio = "";
-	let profileImage = "";
-	let userCreatedTimestamp = null;
+// export async function getServerSideProps({ req }: any) {
+// 	let id = "";
+// 	let firstName = "";
+// 	let lastName = "";
+// 	let bio = "";
+// 	let profileImage = "";
+// 	let userCreatedTimestamp = null;
 
-	const docRef = doc(db, "users", "0x163290dd5322db5F688b9a90d80817324A185780");
-	const docSnap = await getDoc(docRef);
+// 	const docRef = doc(db, "users", "0x163290dd5322db5f688b9a90d80817324a185780");
+// 	const docSnap = await getDoc(docRef);
 
-	if (docSnap.exists()) {
-		id = docSnap.id;
-		firstName = docSnap.data().firstName;
-		lastName = docSnap.data().lastName;
-		bio = docSnap.data().bio;
-		profileImage = docSnap.data().profileImage;
-		userCreatedTimestamp = docSnap.data().userCreatedTimestamp;
+// 	if (docSnap.exists()) {
+// 		id = docSnap.id;
+// 		firstName = docSnap.data().firstName;
+// 		lastName = docSnap.data().lastName;
+// 		bio = docSnap.data().bio;
+// 		profileImage = docSnap.data().profileImage;
+// 		userCreatedTimestamp = docSnap.data().userCreatedTimestamp;
 
-		return {
-			props: {
-				id,
-				firstName,
-				lastName,
-				bio,
-				profileImage,
-				userCreatedTimestamp,
-			},
-		};
-	} else {
-		return {
-			redirect: {
-				destination: "/",
-				permanent: false,
-			},
-		};
-	}
-}
+// 		return {
+// 			props: {
+// 				id,
+// 				firstName,
+// 				lastName,
+// 				bio,
+// 				profileImage,
+// 				userCreatedTimestamp,
+// 			},
+// 		};
+// 	} else {
+// 		return {
+// 			redirect: {
+// 				destination: "/",
+// 				permanent: false,
+// 			},
+// 		};
+// 	}
+// }

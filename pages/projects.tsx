@@ -1,4 +1,4 @@
-import { collection, getDocs, limit, orderBy, query, startAt } from "firebase/firestore";
+import { collection, getDocs, limit, orderBy, query, startAt, where } from "firebase/firestore";
 import FilterBar from "../components/FilterBar";
 import ProjectCard from "../components/ProjectCard";
 import NftCard from "../components/NftCard";
@@ -19,9 +19,51 @@ function Projects({ projects, nfts }: ProjectsPage) {
 	const [categories, setCategories] = useState([]);
 	const [sortBy, setSortBy] = useState("time");
 
+	const [updatedProjects, setUpdatedProjects] = useState<ProjectType[]>();
+
 	useEffect(() => {
-		console.log(projects);
-	}, []);
+		const queryProjects = async () => {
+			let projects: ProjectType[] = [];
+			const projectQuery = query(collection(db, "projects"), orderBy(`${sortBy === "time" ? "createdTimestamp" : sortBy === "backers" ? "backers" : sortBy === "raised" ? "raised" : sortBy === "followers" ? "followersCounts" : "createdTimestamp"}`, "desc"), limit(20));
+			const projectQuerySnapshot = await getDocs(projectQuery);
+			projectQuerySnapshot.forEach((doc) => {
+				projects.push({
+					id: doc.id,
+					apy: doc.data().apy,
+					amountStaked: doc.data().amountStaked,
+					bannerImage: doc.data().bannerImage,
+					contributions: doc.data().contributions,
+					contributionsCount: doc.data().contributionsCount,
+					contributionsValue: doc.data().contributionsValue,
+					createdTimestamp: doc.data().createdTimestamp,
+					creatorAddress: doc.data().creatorAddress,
+					creatorName: doc.data().creatorName,
+					discord: doc.data().discord,
+					dropDates: doc.data().dropDates,
+					endDate: doc.data().endDate,
+					followers: doc.data().followers,
+					followersCount: doc.data().followersCount,
+					frequency: doc.data().frequency,
+					linkedIn: doc.data().linkedIn,
+					projectDescription: doc.data().projectDescription,
+					projectImage: doc.data().projectImage,
+					projectName: doc.data().projectName,
+					projectTicker: doc.data().projectTicker,
+					tags: doc.data().tags,
+					target: doc.data().target,
+					telegram: doc.data().telegram,
+					tokenId: doc.data().tokenId,
+					tokenPrice: doc.data().tokenPrice,
+					twitter: doc.data().twitter,
+					views: doc.data().views,
+				});
+			});
+
+			setUpdatedProjects(projects);
+		};
+
+		queryProjects();
+	}, [categories]);
 	return (
 		<div className="w-full flex flex-col items-center bg-[#f3f6fc] py-12">
 			<div className="w-4/5 ">

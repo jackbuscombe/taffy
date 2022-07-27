@@ -20,11 +20,11 @@ interface ProjectPageType extends ProjectType {
 	apy: number;
 	odds: number;
 	nfts: NftType[];
-	proposals: ProposalType[];
-	userTokenBalance: number;
+	// proposals: ProposalType[];
+	// userTokenBalance: number;
 }
 
-function Project({ id, projectName, projectTicker, projectDescription, projectImage, bannerImage, dropDates, endDate, ended, creatorAddress, contributionsValue, target, secondsLeft, tokenId, tokenPrice, amountStaked, apy, odds, nfts, views, contributionsCount, followersCount, proposals, userTokenBalance }: ProjectPageType) {
+function Project({ id, projectName, projectTicker, projectDescription, projectImage, bannerImage, dropDates, endDate, ended, creatorAddress, contributionsValue, target, secondsLeft, tokenId, tokenPrice, amountStaked, apy, odds, nfts, views, contributionsCount, followersCount }: ProjectPageType) {
 	const router = useRouter();
 	const [selected, setSelected] = useState<string>("nfts");
 	const [isBackingModalOpen, setIsBackingModalOpen] = useState<boolean>(false);
@@ -35,6 +35,8 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 	const [localEndDate, setLocalEndDate] = useState<string>("");
 	const [timeLeft, setTimeLeft] = useState<string>("");
 	const [similarProjects, setSimilarProjects] = useState<ProjectType[]>([]);
+	const [userTokenBalance, setUserTokenBalance] = useState<number>(0);
+	const [proposals, setProposals] = useState<ProposalType[]>();
 
 	const [upcomingNfts, setUpcomingNfts] = useState<NftType[]>();
 	const [releasedNfts, setReleasedNfts] = useState<NftType[]>();
@@ -145,6 +147,47 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 		setReleasedNfts(releasedArray);
 	}, [nfts]);
 
+	useEffect(() => {
+		async function getUserTokenBalance() {
+			if (typeof account !== "string") {
+				return;
+			}
+
+			let bal = 0;
+
+			const tokenBalanceSnap = await getDoc(doc(db, "tokens", tokenId, "holders", account));
+			if (tokenBalanceSnap.exists()) {
+				bal = tokenBalanceSnap.data().balance;
+				setUserTokenBalance(bal);
+			}
+		}
+
+		async function getUserProposalList() {
+			// Get Project Proposals
+			let proposalList: ProposalType[] = [];
+			const proposalQuery = query(collection(db, "proposals"), where("projectId", "==", id));
+			const proposalQuerySnapshot = await getDocs(proposalQuery);
+			proposalQuerySnapshot.forEach((doc) => {
+				proposalList.push({
+					id: doc.id,
+					description: doc.data().description,
+					options: doc.data().options,
+					projectId: doc.data().projectId,
+					projectImage: doc.data().projectImage,
+					projectName: doc.data().projectName,
+					projectTicker: doc.data().projectTicker,
+					question: doc.data().question,
+					title: doc.data().title,
+					votingCloseTimestamp: doc.data().votingCloseTimestamp,
+				});
+			});
+			setProposals(proposalList);
+		}
+
+		getUserTokenBalance();
+		getUserProposalList();
+	}, [account]);
+
 	return (
 		<main className={`flex flex-col items-center w-full bg-blue-50 pb-8 ${isBackingModalOpen && ""}`}>
 			<div style={{ backgroundImage: `url(${bannerImage})` }} className="flex z-10 flex-col w-full py-16 md:py-32 text-white bg-blend-darken justify-center bg-center bg-cover bg-no-repeat" />
@@ -163,14 +206,14 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 						</div>
 						{creatorAddress === account && (
 							<div className="flex items-center justify-self-end">
-								<button onClick={() => router.push(`/admin/${id}`)} className="text-sm w-32 h-10 border-[1px] rounded-sm border-red-100 text-white font-semibold bg-red-500 hover:bg-red-600">
+								<button onClick={() => router.push(`/admin/${id}`)} className="text-sm w-36 h-10 border-[1px] rounded-sm border-red-100 text-white font-semibold bg-red-500 hover:bg-red-600">
 									Access Admin
 								</button>
 							</div>
 						)}
 					</div>
 					{ended && (
-						<div className="flex space-x-2">
+						<div className="hidden sm:flex space-x-2">
 							<button className="flex bg-blue-500 text-white font-semibold rounded-md px-4 py-1 hover:bg-blue-600 transition transform ease-in-out border-[1px] shadow-2xl">
 								<img src={projectImage} alt="" className="h-6 w-6 rounded-full mr-2" />
 								{amountStaked.toLocaleString()} ETH Staked
@@ -184,26 +227,26 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 				</div>
 				<div className="flex justify-center pt-3 pb-8 w-full bg-white">
 					{ended ? (
-						<div className="flex w-2/3 px-4 justify-between">
-							<div className="flex justify-center space-x-8">
+						<div className="flex flex-col md:flex-row w-2/3 px-4 justify-between space-y-6 md:space-y-0">
+							<div className="flex flex-col sm:flex-row justify-center sm:space-x-8 space-y-2 sm:space-y-0">
 								<div>
-									<p className="text-lg font-semibold">{unixToDateTime(nextDrop, "local")}</p>
+									<p className="text-lg font-semibold">{unixToDateTime(endDate, "local")}</p>
 									<p className="text-sm text-gray-400">Next NFT Drop</p>
 								</div>
-								<div className="border-l-[1px] border-gray-100 pl-4">
+								<div className="sm:border-l-[1px] border-gray-100 sm:pl-4">
 									<p className="text-lg font-semibold">${tokenPrice}</p>
 									<p className="text-sm text-gray-400">Token price</p>
 								</div>
-								<div className="border-l-[1px] border-gray-100 pl-4">
+								<div className="sm:border-l-[1px] border-gray-100 sm:pl-4">
 									<p className="text-lg font-semibold">${amountStaked.toLocaleString()}</p>
 									<p className="text-sm text-gray-400">$ Staked</p>
 								</div>
-								<div className="border-l-[1px] border-gray-100 pl-4">
+								<div className="sm:border-l-[1px] border-gray-100 sm:pl-4">
 									<p className="text-lg font-semibold">{apy}%</p>
 									<p className="text-sm text-gray-400">est. APY</p>
 								</div>
 							</div>
-							<div className="flex justify-center items-center space-x-2">
+							<div className="flex flex-col sm:flex-row justify-center sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
 								<button onClick={() => setIsStakingModalOpen(true)} className="text-sm px-6 py-2 border-[1px] rounded-sm border-blue-100 text-[#5082fb] font-semibold hover:bg-[#5082fb] hover:text-white transition transform ease-in-out">
 									Stake {projectTicker.toUpperCase()}
 								</button>
@@ -213,7 +256,7 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 					) : (
 						<div className="flex flex-col sm:flex-row w-2/3 justify-between">
 							<div className="w-full flex space-x-8">
-								<div className="align-middle">
+								<div className="flex flex-col justify-center">
 									<p className="text-lg font-semibold">
 										{contributionsValue}ETH / {target}ETH
 									</p>
@@ -225,15 +268,16 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 								<div className="border-l-[1px] border-gray-100 pl-4 w-1/2">
 									<p className="text-lg font-semibold">{timeLeft}</p>
 									<p className="hidden sm:inline-block text-sm text-gray-400">All or nothing. This project will only be funded if it reaches its goal by {localEndDate}</p>
+									<p className="inline-block sm:hidden text-sm text-gray-400">Left of raising period.</p>
 								</div>
 							</div>
 							<div className="">
 								{userTokenBalance > 0 && (
-									<button onClick={() => setIsStakingModalOpen(true)} className="text-sm w-full h-10 border-[1px] rounded-sm border-green-100 text-green-500 font-semibold hover:bg-green-500 hover:text-white mb-2">
+									<button onClick={() => setIsStakingModalOpen(true)} className="text-sm w-36 h-10 border-[1px] rounded-sm border-green-100 text-green-500 font-semibold hover:bg-green-500 hover:text-white mb-2">
 										Stake {projectTicker.toUpperCase()}
 									</button>
 								)}
-								<button onClick={() => setIsBackingModalOpen(true)} className="text-sm w-full h-10 border-[1px] rounded-sm border-blue-100 text-[#5082fb] font-semibold hover:bg-[#5082fb] hover:text-white">
+								<button onClick={() => setIsBackingModalOpen(true)} className="text-sm w-full sm:w-36 h-10 border-[1px] rounded-sm border-blue-100 text-[#5082fb] font-semibold hover:bg-[#5082fb] hover:text-white">
 									Back Project
 								</button>
 							</div>
@@ -270,7 +314,7 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 							<div className="w-2/3 mb-6">
 								<h2 className="text-2xl text-gray-800 font-bold mb-5">Prize for next round</h2>
 							</div>
-							<div className="grid grid-cols-4 gap-5">
+							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
 								{upcomingNfts?.map((nft, i) => (
 									<NftCardExtended key={nft.id} id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} price={nft.price} creatorImage={nft.creatorImage} creatorName={nft.creatorName} />
 								))}
@@ -286,7 +330,7 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 							<div className="mb-6">
 								<h2 className="text-2xl text-gray-800 font-bold mb-5">Already Released</h2>
 							</div>
-							<div className="w-full grid grid-cols-4 gap-5">
+							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
 								{releasedNfts?.map((nft, i) => (
 									<NftCardExtended key={nft.id} id={nft.id} nftUrl={nft.nftUrl} nftName={nft.name} projectName={nft.projectName} price={nft.price} creatorImage={nft.creatorImage} creatorName={nft.creatorName} />
 								))}
@@ -303,7 +347,7 @@ function Project({ id, projectName, projectTicker, projectDescription, projectIm
 			) : selected == "votes" ? (
 				<div className="flex flex-col w-2/3 rounded-md p-4 divide-y">
 					<h2 className="text-2xl text-gray-800 font-bold mb-5">Active Proposals</h2>
-					{proposals.map((proposal: any, i: number) => (
+					{proposals?.map((proposal: any, i: number) => (
 						<VotingCard key={proposal.id} proposalId={proposal.id} title={proposal.title} description={proposal.description} question={proposal.question} options={proposal.options} projectId={proposal.projectId} projectName={proposal.projectName} projectTicker={proposal.projectTicker} projectImage={proposal.projectImage} timeLeft={unixToDateTime(proposal.votingCloseTimestamp, "local")} />
 					))}
 				</div>
@@ -481,32 +525,6 @@ export async function getServerSideProps({ params }: any) {
 			nfts.push({ id: doc.id, ...doc.data() });
 		});
 
-		// Get Project Proposals
-		let proposals: ProposalType[] = [];
-		const proposalQuery = query(collection(db, "proposals"), where("projectId", "==", id));
-		const proposalQuerySnapshot = await getDocs(proposalQuery);
-		proposalQuerySnapshot.forEach((doc) => {
-			proposals.push({
-				id: doc.id,
-				description: doc.data().description,
-				options: doc.data().options,
-				projectId: doc.data().projectId,
-				projectImage: doc.data().projectImage,
-				projectName: doc.data().projectName,
-				projectTicker: doc.data().projectTicker,
-				question: doc.data().question,
-				title: doc.data().title,
-				votingCloseTimestamp: doc.data().votingCloseTimestamp,
-			});
-		});
-
-		let userTokenBalance = 0;
-
-		const tokenBalanceSnap = await getDoc(doc(db, "tokens", tokenId, "holders", "0x163290dd5322db5F688b9a90d80817324A185780"));
-		if (tokenBalanceSnap.exists()) {
-			userTokenBalance = tokenBalanceSnap.data().balance;
-		}
-
 		return {
 			props: {
 				id,
@@ -531,8 +549,6 @@ export async function getServerSideProps({ params }: any) {
 				apy,
 				odds,
 				nfts,
-				proposals,
-				userTokenBalance,
 			},
 		};
 	} else {
