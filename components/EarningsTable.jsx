@@ -103,7 +103,7 @@ function EarningsTable({ contributionArray }) {
 				</thead>
 				<tbody>
 					{tableData?.map(({ id, projectName, sales, royalty, revenue }, i) => (
-						<EarningsTableRow id={id} projectName={projectName} sales={sales} royalty={royalty} revenue={revenue} />
+						<EarningsTableRow key={i} id={id} projectName={projectName} sales={sales} royalty={royalty} revenue={revenue} />
 						// <tr key={i} className="bg-white border-b hover:bg-gray-50">
 						// 	<th onClick={() => router.push(`/project/${id}`)} scope="row" className="text-blue-600 font-semibold px-4 py-2 border-[1px] border-gray-300 whitespace-nowrap cursor-pointer hover:underline">
 						// 		{projectName}

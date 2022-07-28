@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import StakeTokenModal from "./StakeTokenModal";
 
-function EarningsTableRow({ id, projectName, sales, royalty, revenue }: any) {
+function EarningsTableRow({ key, id, projectName, sales, royalty, revenue }: any) {
 	const router = useRouter();
 	const [isStakingModalOpen, setIsStakingModalOpen] = useState(false);
 	const stakeTokenModalWrapper = useRef(null);
@@ -28,7 +28,7 @@ function EarningsTableRow({ id, projectName, sales, royalty, revenue }: any) {
 	}
 
 	return (
-		<tr key={id} className="bg-white border-b hover:bg-gray-50">
+		<tr className="bg-white border-b hover:bg-gray-50">
 			<th onClick={() => router.push(`/project/${id}`)} scope="row" className="text-blue-600 font-semibold px-4 py-2 border-[1px] border-gray-300 whitespace-nowrap cursor-pointer hover:underline">
 				{projectName}
 			</th>
