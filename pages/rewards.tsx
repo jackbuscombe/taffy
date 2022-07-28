@@ -23,10 +23,10 @@ type Rewards = {
 function Rewards({ taffy }: TokenType | any) {
 	const [earning, setEarning] = useState<boolean>(false);
 	const [taffyData, setTaffyData] = useState<taffyData>();
-	const [rewards, setRewards] = useState<Rewards>();
 	const { account } = useMoralis();
 	const [backedProjects, setBackedProjects] = useState<UserContributionType[]>();
-	const [userStakedValue, setUserStakedValue] = useState<number>();
+	const [userStakedValue, setUserStakedValue] = useState<number>(0);
+	const [rewards, setRewards] = useState<number>(0);
 	const [isStakingModalOpen, setIsStakingModalOpen] = useState<boolean>(false);
 
 	const stakeTokenModalWrapper = useRef(null);
@@ -133,11 +133,11 @@ function Rewards({ taffy }: TokenType | any) {
 					<div className="col-span-1 flex justify-between flex-col space-y-8">
 						<div className="flex justify-center space-x-8">
 							<div className="border-l-[1px] border-gray-100 pl-4">
-								<p className="text-lg font-semibold">${rewards?.stake}</p>
+								<p className="text-lg font-semibold">${userStakedValue}</p>
 								<p className="text-sm text-gray-400">My Stake (USD)</p>
 							</div>
 							<div className="border-l-[1px] border-gray-100 pl-4">
-								<p className="text-lg font-semibold">${userStakedValue ?? ""}</p>
+								<p className="text-lg font-semibold">${rewards}</p>
 								<p className="text-sm text-gray-400">Latest Rewards</p>
 							</div>
 						</div>
@@ -169,7 +169,7 @@ function Rewards({ taffy }: TokenType | any) {
 			</div>
 			{isStakingModalOpen && (
 				<div ref={stakeTokenModalWrapper}>
-					<StakeTokenModal tokenId={taffy.id} userTokenBalance={1} setIsStakingModalOpen={setIsStakingModalOpen} endTime={Date.now()} projectName={"Taffy"} tokenPrice={taffy.tokenPrice} tokenTicker={"TAFFY"} />
+					<StakeTokenModal tokenId={taffy.id} userTokenBalance={1} setIsStakingModalOpen={setIsStakingModalOpen} endTime={Date.now() / 1000} projectName={"Taffy"} tokenPrice={taffy.tokenPrice} tokenTicker={"TAFFY"} />
 				</div>
 			)}
 		</main>

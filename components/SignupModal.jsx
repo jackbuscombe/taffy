@@ -125,7 +125,7 @@ function SignupModal() {
 			</div>
 
 			<div className="w-full flex flex-col items-center my-4 space-y-3">
-				<img onClick={handleImageDialogue} id="showImage" src="/avatar_placeholder.jpg" alt="Profile Picture" className="h-32 w-32 cursor-pointer rounded-full hover:opacity-90 transition transform ease-in-out" />
+				<img onClick={handleImageDialogue} id="showImage" src="/avatar_placeholder.jpg" alt="Profile Picture" className="h-32 w-32 cursor-pointer rounded-full hover:opacity-90 transition transform ease-in-out object-cover" />
 				<button onClick={handleImageDialogue} className="bg-blue-500 text-white p-2 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
 					Change Profile Picture
 				</button>

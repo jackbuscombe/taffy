@@ -54,6 +54,7 @@ function SearchDropdown({ searchInput, setIsSearchDropdownOpen }) {
 					});
 				});
 			}
+			console.log(updatedResults);
 
 			setSearchResults(updatedResults);
 		}

@@ -373,20 +373,21 @@ function NewProject() {
 
 	return (
 		<main className="w-full bg-blue-50 flex justify-center py-8">
-			<div className="flex flex-col justify-items-center bg-white w-3/4 px-24 py-8 divide-y text-gray-700">
+			<div className="flex flex-col justify-items-center bg-white w-11/12 px-6 md:w-3/4 md:px-24 py-8 divide-y text-gray-700 text-center">
 				{/* Row */}
 				<div className="flex flex-col py-4">
-					<div className="flex items-center py-4 space-x-20">
-						<h1 className="w-1/3 text-2xl font-bold text-gray-900">Create New Project</h1>
-						<div className="bg-[url('/watch_mint_bg.png')] w-2/3 h-24 flex items-center px-8 cursor-pointer hover:opacity-90 transition transform ease-in-out">
+					<div className="flex flex-col md:flex-row items-center text-center py-4 md:space-x-20 space-y-6 md:space-y-0">
+						<h1 className="w-full md:w-1/3 text-2xl font-bold text-gray-900">Create New Project</h1>
+						<div className="bg-[url('/watch_mint_bg.png')] w-full md:w-2/3 h-24 flex justify-center md:justify-start items-center px-8 cursor-pointer hover:opacity-90 transition transform ease-in-out">
 							<img src="/watch_mint_text.png" alt="" className="" />
 						</div>
 					</div>
 
-					<div className="flex py-4 space-x-20">
-						<p className="w-1/3 font-semibold">Creator Wallet Address</p>
-						<div className="w-2/3">
-							<p className="mb-4">{account}</p>
+					<div className="flex flex-col md:flex-row py-8 md:items-center md:space-x-20 space-y-6 md:space-y-0">
+						<p className="md:w-1/3 font-semibold">Creator Wallet Address</p>
+						<div className="md:w-2/3 flex flex-col justify-center space-y-3">
+							<p className="break-words md:hidden">{account}</p>
+							<p className="hidden md:block mb-4 break-words">{account}</p>
 							<button onClick={handleLogout} className="bg-green-500 text-white px-4 py-2 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-green-500 border-green-500 transition transform ease-in-out">
 								Change Wallet
 							</button>
@@ -395,39 +396,39 @@ function NewProject() {
 				</div>
 
 				{/* Row */}
-				<div className="flex items-center py-8 space-x-20">
-					<p className="w-1/3 font-semibold">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<p className="md:w-1/3 font-semibold">
 						Project name <span className="text-red-500">*</span>
 					</p>
-					<input ref={projectNameRef} type="text" placeholder="Project name" className="w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2" />
+					<input ref={projectNameRef} type="text" placeholder="Project name" className="md:w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2" />
 				</div>
 
 				{/* Row */}
-				<div className="flex items-center py-8 space-x-20">
-					<p className="w-1/3 font-semibold">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<p className="md:w-1/3 font-semibold">
 						Project Ticker <span className="text-red-500">*</span>
 					</p>
-					<input ref={projectTickerRef} value={projectTicker} onChange={(e) => setProjectTicker(e.target.value)} type="text" placeholder="Project ticker (e.g. TKN)" className="w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2" />
+					<input ref={projectTickerRef} value={projectTicker} onChange={(e) => setProjectTicker(e.target.value)} type="text" placeholder="Project ticker (e.g. TKN)" className="md:w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2" />
 				</div>
 
 				{/* Row */}
-				<div className="flex py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">Project description</p>
 						<p className="font-light text-sm">The description will be included on the items detail page underneath its image. Markdown syntax is supported.</p>
 					</div>
-					<textarea ref={projectDescriptionRef} placeholder="Description" className="w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
+					<textarea ref={projectDescriptionRef} placeholder="Description" className="md:w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
 				</div>
 
 				{/* Row */}
-				<div className="flex py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">
 							Project profile photo <span className="text-red-500">*</span>
 						</p>
 						<p className="font-light text-sm">File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 100 MB</p>
 					</div>
-					<div className="w-2/3">
+					<div className="md:w-2/3 flex justify-center">
 						{!projectImage && (
 							<button id="project_image_button" onClick={handleProjectImageDialogue} className="flex items-center h-20 border-[1px] border-gray-200 rounded-sm px-10 py-1 hover:bg-blue-500 hover:text-white group transition transform ease-in-out">
 								<PaperClipIcon className="h-6 w-6 mr-2" />
@@ -440,14 +441,14 @@ function NewProject() {
 				</div>
 
 				{/* Row */}
-				<div className="flex py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">
 							Project banner photo <span className="text-red-500">*</span>
 						</p>
 						<p className="font-light text-sm">File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 100 MB</p>
 					</div>
-					<div className="w-2/3">
+					<div className="md:w-2/3 flex justify-center">
 						{!bannerImage && (
 							<button id="banner_image_button" onClick={handleBannerImageDialogue} className="flex items-center h-20 border-[1px] border-gray-200 rounded-sm px-10 py-1 hover:bg-blue-500 hover:text-white group transition transform ease-in-out">
 								<PaperClipIcon className="h-6 w-6 mr-2" />
@@ -461,19 +462,19 @@ function NewProject() {
 
 				{/* Row */}
 				<div className="">
-					<div className="flex items-center py-8 space-x-20">
-						<p className="w-1/3 font-semibold">
+					<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+						<p className="md:w-1/3 font-semibold">
 							Raise amount<span className="text-red-500">*</span>
 						</p>
-						<div className="w-2/3 flex justify-between items-center px-4 border-[1px] border-gray-200 rounded-sm py-2 mb-3">
+						<div className="md:w-2/3 flex justify-between items-center px-4 border-[1px] border-gray-200 rounded-sm py-2 mb-3">
 							<input ref={raiseAmountRef} type="number" onWheel={(e) => (e.target as HTMLInputElement).blur()} placeholder="Amount" className="grow outline-none" />
 							<p className="text-gray-500 cursor-default ml-2">ETH</p>
 							{/* <input ref={telegramRef} placeholder="(optional)" type="text" className="flex-1 outline-none bg-transparent" /> */}
 						</div>
 					</div>
 
-					<div className="flex items-center py-8 space-x-20">
-						<div className="w-1/3 space-y-2">
+					<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+						<div className="md:w-1/3 space-y-2">
 							<p className="font-semibold">
 								Raise end date<span className="text-red-500">*</span>
 							</p>
@@ -482,7 +483,7 @@ function NewProject() {
 							</p>
 						</div>
 
-						<div className="w-2/3 py-2 flex flex-col space-x-4">
+						<div className="md:w-2/3 py-2 flex flex-col space-x-4">
 							{/* <select defaultValue={0} onChange={(e) => setTimezoneOffset(parseInt(e.target.value))} className="border-[1px] border-gray-200 rounded-sm px-4 py-2">
 								<option value={-12}>UTC−12:00</option>
 								<option value={-11}>UTC−11:00</option>
@@ -541,7 +542,7 @@ function NewProject() {
 									</p>
 								</div>
 							) : (
-								<p>Select a date and time to preview UTC conversion.</p>
+								<p className="font-light text-gray-500">Select a date and time to preview UTC conversion.</p>
 							)}
 							{/* <input type="time" min="09:00" max="18:00" required className="border-[1px] border-gray-200 rounded-sm px-4 py-2 outline-none" /> */}
 							{/* <button onClick={() => setIsCalendarOpen(!isCalendarOpen)} className="border-[1px] border-gray-200 rounded-sm px-4 py-2">
@@ -557,11 +558,11 @@ function NewProject() {
 				</div>
 
 				{/* Row */}
-				<div className="flex items-center py-8 space-x-20">
-					<p className="w-1/3 font-semibold">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<p className="md:w-1/3 font-semibold">
 						Raise frequency<span className="text-red-500">*</span>
 					</p>
-					<select ref={frequencyRef} defaultValue={0} className="w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2 outline-none">
+					<select ref={frequencyRef} defaultValue={0} className="md:w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2 outline-none">
 						<option value={0}>Once</option>
 						<option value={60}>Every Hour</option>
 						<option value={1440}>Every Day</option>
@@ -571,19 +572,19 @@ function NewProject() {
 				</div>
 
 				{/* Row */}
-				<div className="flex items-center py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">
 							Token price <span className="text-red-500">*</span>
 						</p>
 						<p className="font-light text-sm">{"ETH price to buy 1 token."}</p>
 					</div>
-					<div className="w-2/3">
+					<div className="md:w-2/3">
 						<div className="flex justify-between items-center px-4 border-[1px] border-gray-200 rounded-sm py-2 mb-3">
 							<input ref={tokenPriceRef} value={tokenPrice} min={0} onChange={(e) => setTokenPrice(parseFloat(e.target.value))} type="number" onWheel={(e) => (e.target as HTMLInputElement).blur()} placeholder="Token price" className="w-full outline-none" />
 							<p className="text-gray-500 cursor-default ml-2">ETH</p>
 						</div>
-						<div className="flex space-x-4 items-center">
+						<div className="flex flex-col md:flex-row md:justify-center md:space-x-4 items-center space-y-2 md:space-y-0">
 							<p className="text-black font-semibold bg-gray-100 rounded-lg p-2 whitespace-nowrap">
 								1 {projectTicker ? projectTicker.toUpperCase() : "TKN"} = {tokenPrice ? tokenPrice : "0"} ETH
 							</p>
@@ -596,14 +597,14 @@ function NewProject() {
 				</div>
 
 				{/* Row */}
-				<div className="flex items-center py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">
 							Staker APY <span className="text-red-500">*</span>
 						</p>
 						<p className="font-light text-sm">{"% yield stakers will make annually."}</p>
 					</div>
-					<div className="w-2/3 flex flex-col space-y-3">
+					<div className="md:w-2/3 flex flex-col items-center md:items-stretch space-y-3">
 						<label className="inline-flex relative items-center cursor-pointer row-span-1">
 							<input type="checkbox" value="" onChange={() => setIsApyActive(!isApyActive)} checked={isApyActive} className="sr-only peer" />
 							<div className="w-11 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
@@ -619,12 +620,12 @@ function NewProject() {
 				</div>
 
 				{/* Row */}
-				<div className="flex py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">Add tags</p>
 						<p className="font-light text-sm">Add tags to help users find your project. Be concise. Irrelevant tags may hinder your visibility.</p>
 					</div>
-					<div className="w-2/3">
+					<div className="md:w-2/3 flex flex-col items-center md:items-stretch">
 						<div className="flex flex-1 justify-between items-center px-4 border-[1px] border-gray-200 rounded-sm py-2 mb-3">
 							<input
 								value={tagInput}
@@ -649,8 +650,8 @@ function NewProject() {
 							))}
 						</div>
 						<div>
-							<h4 className="mb-2">Popular:</h4>
-							<div className="flex items-center space-x-2">
+							<h4 className="font-light text-gray-500 mb-2">Popular:</h4>
+							<div className="flex flex-wrap justify-center items-end space-y-2 space-x-2">
 								<p onClick={() => setTagInput("art")} className="bg-gray-100 text-gray-700 font-semibold p-2 rounded-lg cursor-pointer">
 									art
 								</p>
@@ -678,9 +679,9 @@ function NewProject() {
 				</div>
 
 				{/* Row */}
-				<div className="flex py-8 space-x-20">
-					<p className="w-1/3 font-semibold">Add social links</p>
-					<div className="w-2/3">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<p className="md:w-1/3 font-semibold">Add social links</p>
+					<div className="md:w-2/3">
 						<div className="flex flex-1 justify-between items-center px-4 border-[1px] border-gray-200 rounded-sm py-2 mb-3">
 							<p className="text-gray-400 cursor-default mr-2">LinkedIn / </p>
 							<input ref={linkedInRef} placeholder="(optional)" type="text" className="flex-1 outline-none bg-transparent" />
@@ -702,11 +703,11 @@ function NewProject() {
 
 				<div>
 					{/* Submit Row */}
-					<div className="w-full flex justify-center space-x-6 py-8">
-						<button onClick={() => router.back()} className="text-gray-500 px-20 py-2 rounded-sm font-semibold hover:bg-gray-500 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
+					<div className="w-full flex flex-col-reverse md:flex-row justify-center md:space-x-6 py-8">
+						<button onClick={() => router.back()} className="text-gray-500 md:px-20 py-2 rounded-sm font-semibold hover:bg-gray-500 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
 							Cancel
 						</button>
-						<button onClick={publishProject} className="bg-blue-500 text-white px-20 py-2 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
+						<button onClick={publishProject} className="bg-blue-500 text-white md:px-20 py-2 mb-2 md:mb-0 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
 							{isPublishing && (
 								<svg role="status" className="inline w-4 h-4 mr-3 text-black animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />

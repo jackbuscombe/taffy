@@ -206,12 +206,12 @@ function Admin({ id, projectName, projectTicker, projectImage, bannerImage, drop
 
 						<div className="flex flex-col md:flex-row space-x-4 py-4">
 							<p className="font-semibold">Amount Raised:</p>
-							<p>{contributionsValue}</p>
+							<p>{contributionsValue} ETH</p>
 						</div>
 
 						<div className="flex flex-col md:flex-row space-x-4 py-4">
 							<p className="font-semibold">Target:</p>
-							<p>{target}</p>
+							<p>{target} ETH</p>
 						</div>
 
 						<div className="flex flex-col md:flex-row space-x-4 py-4">
@@ -221,7 +221,7 @@ function Admin({ id, projectName, projectTicker, projectImage, bannerImage, drop
 
 						<div className="flex flex-col md:flex-row space-x-4 py-4">
 							<p className="font-semibold">Token Price:</p>
-							<p>{tokenPrice}</p>
+							<p>{tokenPrice} ETH</p>
 						</div>
 
 						<div className="flex flex-col md:flex-row space-x-4 py-4">
@@ -233,7 +233,7 @@ function Admin({ id, projectName, projectTicker, projectImage, bannerImage, drop
 
 						<div className="flex flex-col md:flex-row space-x-4 py-4">
 							<p className="font-semibold">APY:</p>
-							<p>{apy}</p>
+							<p>{apy}%</p>
 						</div>
 
 						<div className="flex flex-col md:flex-row space-x-4 py-4">

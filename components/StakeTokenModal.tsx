@@ -7,6 +7,7 @@ import { useMoralis } from "react-moralis";
 import { db } from "../firebase";
 import capitalizeFirstLetter from "../hooks/capitalizeFirstLetter";
 import dateToUnix from "../hooks/dateToUnix";
+import unixToDateTime from "../hooks/unixToDateTime";
 
 function StakeTokenModal({ setIsStakingModalOpen, tokenId, userTokenBalance, endTime, projectName, tokenPrice, tokenTicker }: any) {
 	const [tokenBalance, setTokenBalance] = useState(userTokenBalance);
@@ -166,7 +167,7 @@ function StakeTokenModal({ setIsStakingModalOpen, tokenId, userTokenBalance, end
 				Confirm
 			</button>
 
-			<p className="text-gray-500">Confirming this will send your funds to the staking contract. Staking will give you the opportunity to win NFT lotteries and you will be able to withdraw these funds after {endTime}</p>
+			<p className="text-gray-500">Confirming this will send your funds to the staking contract. Staking will give you the opportunity to win NFT lotteries and you will be able to withdraw these funds after {unixToDateTime(endTime, "local")}</p>
 			<Toaster />
 		</div>
 	);

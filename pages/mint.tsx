@@ -162,7 +162,7 @@ function Mint() {
 		try {
 			const docRef = await addDoc(collection(db, "nfts"), {
 				nftUrl: "",
-				name: name.current.value,
+				name: name.current.value.toLowerCase(),
 				description: description.current?.value || "",
 				createdTimestamp: Date.now() / 1000,
 				creatorAddress: account,
@@ -250,20 +250,21 @@ function Mint() {
 
 	return (
 		<main className="w-full bg-blue-50 flex justify-center py-8">
-			<div className="flex flex-col justify-items-center bg-white w-3/4 px-24 py-8 divide-y text-gray-700">
+			<div className="flex flex-col justify-items-center bg-white w-11/12 px-6 md:w-3/4 md:px-24 py-8 divide-y text-gray-700 text-center">
 				{/* Row 1 */}
 				<div className="flex flex-col py-4">
-					<div className="flex items-center py-4 space-x-20">
-						<h1 className="w-1/3 text-2xl font-bold text-gray-900">Mint NFT</h1>
-						<div className="bg-[url('/watch_mint_bg.png')] w-2/3 h-24 flex items-center px-8 cursor-pointer hover:opacity-90 transition transform ease-in-out">
+					<div className="flex flex-col md:flex-row items-center text-center py-4 md:space-x-20 space-y-6 md:space-y-0">
+						<h1 className="w-full md:w-1/3 text-2xl font-bold text-gray-900">Mint NFT</h1>
+						<div className="bg-[url('/watch_mint_bg.png')] w-full md:w-2/3 h-24 flex justify-center md:justify-start items-center px-8 cursor-pointer hover:opacity-90 transition transform ease-in-out">
 							<img src="/watch_mint_text.png" alt="" className="" />
 						</div>
 					</div>
 
-					<div className="flex py-4 space-x-20">
-						<p className="w-1/3 font-semibold">Creator Wallet Address</p>
-						<div className="w-2/3">
-							<p className="mb-4">{account}</p>
+					<div className="flex flex-col md:flex-row py-8 md:items-center md:space-x-20 space-y-6 md:space-y-0">
+						<p className="md:w-1/3 font-semibold">Creator Wallet Address</p>
+						<div className="md:w-2/3 flex flex-col justify-center space-y-3">
+							<p className="break-words md:hidden">{account}</p>
+							<p className="hidden md:block mb-4 break-words">{account}</p>
 							<button onClick={handleLogout} className="bg-green-500 text-white px-4 py-2 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-green-500 border-green-500 transition transform ease-in-out">
 								Change Wallet
 							</button>
@@ -272,11 +273,11 @@ function Mint() {
 				</div>
 
 				{/* Select Project Row */}
-				<div id="project_select" className="flex items-center py-8 space-x-20">
-					<p className="w-1/3 font-semibold">
+				<div id="project_select" className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<p className="md:w-1/3 font-semibold">
 						Select Project <span className="text-red-500">*</span>
 					</p>
-					<div className="w-2/3">
+					<div className="md:w-2/3">
 						<div onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)} className="flex items-center justify-between h-16 border-[1px] border-gray-200 rounded-sm px-4 py-2 cursor-pointer bg-white hover:bg-gray-100">
 							<div className="block items-center w-full">
 								{selectedProject ? (
@@ -335,31 +336,31 @@ function Mint() {
 				</div>
 
 				{/* Row 2 */}
-				<div className="flex items-center py-8 space-x-20">
-					<p className="w-1/3 font-semibold">
+				<div className="flex flex-col md:flex-row py-8 md:items-center md:space-x-20 space-y-6 md:space-y-0">
+					<p className="md:w-1/3 font-semibold">
 						NFT name <span className="text-red-500">*</span>
 					</p>
-					<input ref={name} type="text" placeholder="NFT name" className="w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2" />
+					<input ref={name} type="text" placeholder="NFT name" className="md:w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2" />
 				</div>
 
 				{/* Row 3 */}
-				<div className="flex py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">NFT description</p>
 						<p className="font-light text-sm">The description will be included on the items detail page underneath its image. Markdown syntax is supported.</p>
 					</div>
-					<textarea ref={description} placeholder="Description" className="w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
+					<textarea ref={description} placeholder="Description" className="md:w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
 				</div>
 
 				{/* Row 4 */}
-				<div className="flex py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">
 							File <span className="text-red-500">*</span>
 						</p>
 						<p className="font-light text-sm">File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 100 MB</p>
 					</div>
-					<div className="w-2/3">
+					<div className="md:w-2/3 flex justify-center">
 						{!image && (
 							<button id="image_button" onClick={handleImageDialogue} className="flex items-center h-20 border-[1px] border-gray-200 rounded-sm px-10 py-1 hover:bg-blue-500 hover:text-white group transition transform ease-in-out">
 								<PaperClipIcon className="h-6 w-6 mr-2" />
@@ -373,15 +374,15 @@ function Mint() {
 
 				{/* Row 5 */}
 				<div className="">
-					<div className="flex py-8 space-x-20">
-						<div className="w-1/3 space-y-2">
+					<div className="flex flex-col md:flex-row py-8 md:space-x-20 space-y-3 md:space-y-0">
+						<div className="md:w-1/3 space-y-2">
 							{/* <p className="font-semibold">
 							File <span className="text-red-500">*</span>
 						</p> */}
 							<p className="font-semibold">Add traits</p>
 							<p className="font-light text-sm">Add traits to your NFT. You may add up to 10 unique traits with corresponding values.</p>
 						</div>
-						<div className="w-2/3 px-4 flex flex-col items-center">
+						<div className="md:w-2/3 px-4 flex flex-col items-center">
 							<div id="traits_container">
 								{/* <div id="trait_row" className="flex space-x-2 mb-2">
 									<input ref={trait1} type="text" placeholder="Trait 1 Name" className="w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2" />
@@ -421,11 +422,11 @@ function Mint() {
 					</div>
 
 					{/* Submit Row */}
-					<div className="w-full flex justify-center space-x-6 py-8">
-						<button onClick={() => router.back()} className="text-gray-500 px-20 py-2 rounded-sm font-semibold hover:bg-gray-500 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
+					<div className="w-full flex flex-col-reverse md:flex-row justify-center md:space-x-6 py-8">
+						<button onClick={() => router.back()} className="text-gray-500 md:px-20 py-2 rounded-sm font-semibold hover:bg-gray-500 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
 							Cancel
 						</button>
-						<button onClick={mintNft} className="bg-blue-500 text-white px-20 py-2 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
+						<button onClick={mintNft} className="bg-blue-500 text-white md:px-20 py-2 mb-2 md:mb-0 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
 							Mint
 						</button>
 					</div>

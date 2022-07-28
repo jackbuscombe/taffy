@@ -163,20 +163,21 @@ function Settings() {
 
 	return (
 		<main className="w-full bg-blue-50 flex justify-center py-8">
-			<div className="flex flex-col justify-items-center bg-white w-3/4 px-24 py-8 divide-y text-gray-700">
+			<div className="flex flex-col justify-items-center bg-white w-11/12 px-6 md:w-3/4 md:px-24 py-8 divide-y text-gray-700 text-center">
 				{/* Row 1 */}
 				<div className="flex flex-col py-4">
-					<div className="flex items-center py-4 space-x-20">
-						<h1 className="w-1/3 text-2xl font-bold text-gray-900">Account Settings</h1>
-						<div className="bg-[url('/watch_mint_bg.png')] w-2/3 h-24 flex items-center px-8 cursor-pointer hover:opacity-90 transition transform ease-in-out">
+					<div className="flex flex-col md:flex-row items-center text-center py-4 md:space-x-20 space-y-6 md:space-y-0">
+						<h1 className="w-full md:w-1/3 text-2xl font-bold text-gray-900">Account Settings</h1>
+						<div className="bg-[url('/watch_mint_bg.png')] w-full md:w-2/3 h-24 flex justify-center md:justify-start items-center px-8 cursor-pointer hover:opacity-90 transition transform ease-in-out">
 							<img src="/watch_mint_text.png" alt="" className="" />
 						</div>
 					</div>
 
-					<div className="flex py-4 space-x-20">
-						<p className="w-1/3 font-semibold">Creator Wallet Address</p>
-						<div className="w-2/3">
-							<p className="mb-4">{account}</p>
+					<div className="flex flex-col md:flex-row py-8 md:items-center md:space-x-20 space-y-6 md:space-y-0">
+						<p className="md:w-1/3 font-semibold align-middle">Your Wallet Address</p>
+						<div className="md:w-2/3 flex flex-col justify-center space-y-3">
+							<p className="break-words md:hidden">{account}</p>
+							<p className="hidden md:block mb-4 break-words">{account}</p>
 							<button onClick={handleLogout} className="bg-green-500 text-white px-4 py-2 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-green-500 border-green-500 transition transform ease-in-out">
 								Change Wallet
 							</button>
@@ -185,14 +186,14 @@ function Settings() {
 				</div>
 
 				{/* Row 1 */}
-				<div className="flex py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">
 							Profile picture <span className="text-red-500">*</span>
 						</p>
-						<p className="font-light text-sm">File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 100 MB</p>
+						<p className="hidden md:block font-light text-sm">File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 100 MB</p>
 					</div>
-					<div className="w-2/3">
+					<div className="md:w-2/3 flex justify-center">
 						{!image && (
 							<button id="image_button" onClick={handleImageDialogue} className="flex items-center h-20 border-[1px] border-gray-200 rounded-sm px-10 py-1 hover:bg-blue-500 hover:text-white group transition transform ease-in-out">
 								<PaperClipIcon className="h-6 w-6 mr-2" />
@@ -205,31 +206,37 @@ function Settings() {
 				</div>
 
 				{/* Row 2 */}
-				<div className="flex items-center py-8 space-x-20">
-					<p className="w-1/3 font-semibold">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<p className="md:w-1/3 font-semibold">
 						Your name <span className="text-red-500">*</span>
 					</p>
-					<div className="w-2/3 flex space-x-3">
-						<input value={firstName} onChange={(e) => setFirstName(e.target.value.toUpperCase())} ref={firstNameRef} type="text" placeholder="First name" className="border-[1px] border-gray-200 rounded-sm px-4 py-2" />
-						<input value={lastName} onChange={(e) => setLastName(e.target.value.toUpperCase())} ref={lastNameRef} type="text" placeholder="Last name" className="border-[1px] border-gray-200 rounded-sm px-4 py-2" />
+					<div className="md:w-2/3 flex flex-col lg:flex-row lg:space-x-3 space-y-6 lg:space-y-0">
+						<div className="flex flex-col space-y-1">
+							<input value={firstName} onChange={(e) => setFirstName(e.target.value.toUpperCase())} ref={firstNameRef} type="text" placeholder="First name" className="border-[1px] border-gray-200 rounded-sm px-4 py-2" />
+							<p className="text-gray-500 font-light">First Name</p>
+						</div>
+						<div className="flex flex-col space-y-1">
+							<input value={lastName} onChange={(e) => setLastName(e.target.value.toUpperCase())} ref={lastNameRef} type="text" placeholder="Last name" className="border-[1px] border-gray-200 rounded-sm px-4 py-2" />
+							<p className="text-gray-500 font-light">Last Name</p>
+						</div>
 					</div>
 				</div>
 
 				{/* Row 3 */}
-				<div className="flex py-8 space-x-20">
-					<div className="w-1/3 space-y-2">
+				<div className="flex flex-col md:flex-row py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 space-y-2">
 						<p className="font-semibold">Bio</p>
 						<p className="font-light text-sm">The description will be included on the items detail page underneath its image. Markdown syntax is supported.</p>
 					</div>
-					<textarea value={bio} onChange={(e) => setBio(e.target.value)} ref={bioRef} placeholder="Write something about yourself" className="w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
+					<textarea value={bio} onChange={(e) => setBio(e.target.value)} ref={bioRef} placeholder="Write something about yourself" className="md:w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none" />
 				</div>
 
 				{/* Submit Row */}
-				<div className="w-full flex justify-center space-x-6 py-8">
-					<button onClick={() => router.push("/profile/1")} className="text-gray-500 px-20 py-2 rounded-sm font-semibold hover:bg-gray-500 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
+				<div className="w-full flex flex-col-reverse md:flex-row justify-center md:space-x-6 py-8">
+					<button onClick={() => router.push("/profile/1")} className="text-gray-500 md:px-20 py-2 rounded-sm font-semibold hover:bg-gray-500 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
 						Cancel
 					</button>
-					<button onClick={save} className="bg-blue-500 text-white px-20 py-2 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
+					<button onClick={save} className="bg-blue-500 text-white md:px-20 py-2 mb-2 md:mb-0 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
 						Save
 					</button>
 				</div>

@@ -144,14 +144,14 @@ function CreateProposal() {
 
 	return (
 		<main className="w-full bg-blue-50 flex justify-center py-8">
-			<div className="flex flex-col justify-items-center bg-white w-3/4 px-24 py-8 divide-y text-gray-700">
-				<h1 className="w-1/3 text-2xl font-bold text-gray-900 py-4">Create A Proposal</h1>
+			<div className="flex flex-col justify-items-center bg-white w-11/12 px-6 md:w-3/4 md:px-24 py-8 divide-y text-gray-700 text-center">
+				<h1 className="md:w-1/3 text-2xl font-bold text-gray-900 py-4">Create A Proposal</h1>
 
-				<div id="project_select" className="flex items-center py-8 space-x-20">
-					<p className="w-1/3 font-semibold">
+				<div id="project_select" className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<p className="md:w-1/3 font-semibold">
 						Select Project <span className="text-red-500">*</span>
 					</p>
-					<div className="w-2/3">
+					<div className="md:w-2/3">
 						<div onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)} className="flex items-center justify-between h-16 border-[1px] border-gray-200 rounded-sm px-4 py-2 cursor-pointer bg-white hover:bg-gray-100">
 							<div className="block items-center w-full">
 								{selectedProject ? (
@@ -209,18 +209,18 @@ function CreateProposal() {
 					</div>
 				</div>
 
-				<div className="flex py-8 space-x-20">
-					<h2 className="w-1/3 font-semibold">Proposal Title</h2>
-					<input ref={titleRef} type="text" placeholder="Proposal title" className="w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2" />
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<h2 className="md:w-1/3 font-semibold">Proposal Title</h2>
+					<input ref={titleRef} type="text" placeholder="Proposal title" className="md:w-2/3 border-[1px] border-gray-200 rounded-sm px-4 py-2" />
 				</div>
 
-				<div className="flex py-8 space-x-20">
-					<h2 className="w-1/3 font-semibold">Proposal Description</h2>
-					<textarea ref={descriptionRef} rows={10} placeholder="Describe what is being voted on" className="w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none"></textarea>
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<h2 className="md:w-1/3 font-semibold">Proposal Description</h2>
+					<textarea ref={descriptionRef} rows={10} placeholder="Describe what is being voted on" className="md:w-2/3 h-28 border-[1px] border-gray-200 rounded-sm px-4 py-2 resize-none"></textarea>
 				</div>
 
-				<div className="flex items-center py-8 space-x-20">
-					<div className="w-1/3 text-gray-900 space-y-2">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 text-gray-900 space-y-2">
 						<p className="font-semibold">
 							Voting closing date<span className="text-red-500">*</span>
 						</p>
@@ -228,7 +228,7 @@ function CreateProposal() {
 							Select your <span className="font-bold">local</span> date and time for which voting will become unavailable. This will be converted to UTC.
 						</p>
 					</div>
-					<div className="w-2/3 py-2 flex flex-col space-x-4">
+					<div className="md:w-2/3 py-2 flex flex-col space-x-4">
 						<input
 							type="datetime-local"
 							onChange={(e) => {
@@ -246,18 +246,18 @@ function CreateProposal() {
 								</p>
 							</div>
 						) : (
-							<p>Select a date and time to preview UTC conversion.</p>
+							<p className="text-light text-gray-500">Select a date and time to preview UTC conversion.</p>
 						)}
 					</div>
 				</div>
 
-				<div className="flex py-8 space-x-20">
-					<div className="w-1/3 text-gray-900 py-4 space-y-2">
+				<div className="flex flex-col md:flex-row md:items-center py-8 md:space-x-20 space-y-6 md:space-y-0">
+					<div className="md:w-1/3 text-gray-900 py-4 space-y-2">
 						<h2 className="font-semibold">Options</h2>
 						<p className="font-light text-sm">Describe the options stakeholder can select. These will be deisplayed as multiple-choice.</p>
 					</div>
 
-					<div className="w-2/3 flex flex-col items-center">
+					<div className="md:w-2/3 flex flex-col items-center">
 						<input ref={questionRef} type="text" placeholder="Enter call to action question" className="border-[1px] border-gray-200 rounded-sm px-4 py-2 w-full mb-6" />
 						<div className="w-full">
 							{[...Array(optionCount)].map((_, i) => (
@@ -289,11 +289,11 @@ function CreateProposal() {
 					</div>
 				</div>
 
-				<div className="w-full flex justify-center space-x-6 py-8">
-					<button onClick={() => router.back()} className="text-gray-500 px-20 py-2 rounded-sm font-semibold hover:bg-gray-500 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
+				<div className="flex flex-col-reverse md:flex-row justify-center md:space-x-6 py-8">
+					<button onClick={() => router.back()} className="text-gray-500 md:px-20 py-2 rounded-sm font-semibold hover:bg-gray-500 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
 						Cancel
 					</button>
-					<button onClick={openPreview} className="bg-blue-500 text-white px-20 py-2 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
+					<button onClick={openPreview} className="bg-blue-500 text-white md:px-20 py-2 mb-2 md:mb-0 rounded-sm font-semibold hover:bg-transparent border-[1px] hover:text-blue-500 border-blue-500 transition transform ease-in-out">
 						Preview
 					</button>
 				</div>
@@ -343,7 +343,7 @@ function CreateProposal() {
 						</div>
 					</div>
 
-					<div className="w-full flex justify-center space-x-6 py-8">
+					<div className="w-full flex flex-col-reverse md:flex-row justify-center md:space-x-6 py-8">
 						<button onClick={() => setIsPreviewing(false)} className="text-gray-500 px-20 py-2 rounded-sm font-semibold hover:bg-gray-500 border-[1px] hover:text-white border-gray-300 transition transform ease-in-out">
 							Close
 						</button>
